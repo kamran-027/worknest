@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
+import jobRoutes from "./routes/jobRoutes";
 
 dotenv.config();
 connectDB();
@@ -20,6 +21,7 @@ app.get("/", async (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/jobs", jobRoutes);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
