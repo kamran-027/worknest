@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import User from "../models/User";
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken";
-import sendEmail from "../utils/sendEmail";
 import crypto from "crypto";
+import { sendEmail } from "../utils/sendEmail";
 
 export const registerUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -44,7 +44,7 @@ export const loginUser = async (req: Request, res: Response) => {
     if (user.isLocked) {
       return res.status(403).json({
         message:
-          "Account locked due to multiple failed attempts. Reset your password.",
+          "Your account is locked. Please check your email to unlock it.",
       });
     }
 
@@ -56,18 +56,23 @@ export const loginUser = async (req: Request, res: Response) => {
       // Lock account if failed attempts reach 5
       if (user.failedLoginAttempts >= 5) {
         user.isLocked = true;
-        await user.save();
 
         const otp = crypto.randomInt(100000, 999999).toString(); // Generate 6-digit OTP
         user.unlockOTP = otp;
-        user.otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // Set OTP expiry (10 mins)
+        user.otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // OTP valid for 10 mins
+
+        await user.save(); // Save before sending email
 
         await sendEmail(
           user.email,
           "🔒 Account Locked - WorkNest",
           `Your account has been locked due to multiple failed login attempts. 
-          Click here to unlock: http://localhost:5000/unlock-account?email=${user.email}`
+          Use this OTP to unlock your account: ${otp}`
         );
+
+        return res.status(403).json({
+          message: "Your account is locked. An OTP has been sent to unlock it.",
+        });
       }
 
       await user.save();
@@ -75,11 +80,13 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 
     // Reset failed attempts on successful login
-    user.failedLoginAttempts = 0;
-    user.isLocked = false;
-    user.unlockOTP = "";
-    user.otpExpiry = new Date("");
-    await user.save();
+    await User.updateOne(
+      { email },
+      {
+        $set: { failedLoginAttempts: 0, isLocked: false },
+        $unset: { unlockOTP: "", otpExpiry: "" },
+      }
+    );
 
     res.json({
       _id: user._id,
@@ -93,14 +100,32 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 export const unlockAccount = async (req: Request, res: Response) => {
-  const { email } = req.body;
+  const { email, otp } = req.body;
 
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "User not found" });
 
-    user.failedLoginAttempts = 0;
-    await user.save();
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    // Check if OTP is valid
+    if (
+      user.unlockOTP !== otp ||
+      !user.otpExpiry ||
+      new Date() > user.otpExpiry
+    ) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    // Unlock account
+    await User.updateOne(
+      { email },
+      {
+        $set: { failedLoginAttempts: 0, isLocked: false },
+        $unset: { unlockOTP: "", otpExpiry: "" },
+      }
+    );
 
     res.json({ message: "Account unlocked successfully. You can now log in." });
   } catch (error) {
