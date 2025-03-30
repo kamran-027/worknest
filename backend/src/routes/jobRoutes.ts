@@ -7,6 +7,7 @@ import {
   createJob,
   updateJob,
   deleteJob,
+  applyToJob,
 } from "../controllers/jobController";
 
 const router = express.Router();
@@ -34,5 +35,9 @@ router.put("/:id", protect, async (req, res) => {
 router.delete("/:id", protect, async (req, res) => {
   await deleteJob(req, res);
 }); // Delete a job
+
+router.post("/:jobId/apply", protect, async (req, res) => {
+  await applyToJob(req, res);
+}); //Apply to job
 
 export default router;

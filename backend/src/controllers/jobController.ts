@@ -95,3 +95,28 @@ export const updateJob = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Error updating job", error });
   }
 };
+
+export const applyToJob = async (req: AuthRequest, res: Response) => {
+  try {
+    const { jobId } = req.params;
+    const userId = req.user._id; // Extracted from JWT token
+
+    const job = await Job.findById(jobId);
+    if (!job) return res.status(404).json({ message: "Job not found" });
+
+    // Check if user has already applied
+    if (job.applicants.includes(userId)) {
+      return res
+        .status(400)
+        .json({ message: "You have already applied for this job" });
+    }
+
+    // Add user to applicants list
+    job.applicants.push(userId);
+    await job.save();
+
+    return res.json({ message: "Application successful!" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
