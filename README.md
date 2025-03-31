@@ -51,10 +51,6 @@ WorkNest simplifies job searching with intelligent recommendations and secure au
       docker-compose up -d
       ```
 
-    ```
-
-    ```
-
 4.  **Run Backend:**
 
     - `cd backend`
