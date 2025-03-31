@@ -6,6 +6,7 @@ import JobSearch from "../components/JobSearch";
 import SavedJobs from "../components/SavedJobs";
 // import Applications from "../components/Applications";
 import AppBar from "../components/Appbar";
+import MyApplications from "../components/MyApplications";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -27,7 +28,7 @@ const Dashboard = () => {
           <Routes>
             <Route path="/" element={<JobSearch />} />
             <Route path="saved-jobs" element={<SavedJobs />} />
-            {/* <Route path="/dashboard/applications" element={<Applications />} /> */}
+            <Route path="applications" element={<MyApplications />} />
           </Routes>
         </div>
       </div>

@@ -11,6 +11,7 @@ import {
   saveJob,
   getSavedJobs,
 } from "../controllers/jobController";
+import { getAppliedJobs } from "../controllers/userController";
 
 const router = express.Router();
 
@@ -21,6 +22,14 @@ router.get("/recommendations", protect, async (req, res) => {
 router.get("/", protect, async (req, res) => {
   await getJobs(req, res);
 }); // Get all jobs
+
+router.get("/saved-jobs", protect, async (req, res) => {
+  await getSavedJobs(req, res); //Save a job
+}); //Get saved jobs
+
+router.get("/applied-jobs", protect, async (req, res) => {
+  await getAppliedJobs(req, res);
+}); //Gets Applied Jobs
 
 router.get("/:id", protect, async (req, res) => {
   await getJobById(req, res);
@@ -44,10 +53,6 @@ router.post("/:jobId/apply", protect, async (req, res) => {
 
 router.post("/:jobId/save", protect, async (req, res) => {
   await saveJob(req, res); //Save a job
-});
-
-router.get("/saved", protect, async (req, res) => {
-  await getSavedJobs(req, res); //Save a job
 });
 
 export default router;

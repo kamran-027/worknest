@@ -9,13 +9,13 @@ const Sidebar = () => {
           Home
         </Link>
         <Link
-          to="dashboard/saved-jobs"
+          to="/dashboard/saved-jobs"
           className="block p-2 rounded hover:bg-gray-700"
         >
           Saved Jobs
         </Link>
         <Link
-          to="dashboard/applications"
+          to="/dashboard/applications"
           className="block p-2 rounded hover:bg-gray-700"
         >
           My Applications

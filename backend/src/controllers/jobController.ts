@@ -185,3 +185,13 @@ export const getSavedJobs = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getAppliedJobs = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user._id;
+    const jobs = await Job.find({ applicants: userId });
+    res.json(jobs);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching applied jobs", error });
+  }
+};
