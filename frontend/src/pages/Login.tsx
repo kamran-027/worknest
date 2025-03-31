@@ -50,7 +50,7 @@ const Login = () => {
           />
           <button
             type="submit"
-            className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            className="w-full cursor-pointer p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
           >
             Login
           </button>
@@ -60,7 +60,7 @@ const Login = () => {
           Don't have an account?{" "}
           <button
             onClick={() => navigate("/signup")}
-            className="text-blue-500 hover:underline"
+            className="text-blue-500 cursor-pointer hover:underline"
           >
             Sign up
           </button>

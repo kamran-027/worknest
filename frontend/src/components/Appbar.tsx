@@ -10,7 +10,7 @@ const AppBar = () => {
         <span className="text-sm">Welcome, {user?.name || "User"}</span>
         <button
           onClick={logout}
-          className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-md text-sm"
+          className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-md text-sm cursor-pointer"
         >
           Logout
         </button>

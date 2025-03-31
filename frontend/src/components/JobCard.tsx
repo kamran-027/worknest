@@ -30,7 +30,7 @@ const JobCard: FC<JobCardProps> = ({
       <p className="text-sm mt-2">{description}</p>
       <div className="mt-3 flex gap-2">
         <button
-          className={`px-3 py-1 text-sm rounded-md ${
+          className={`px-3 py-1 cursor-pointer text-sm rounded-md ${
             isSaved ? "bg-gray-400" : "bg-blue-500 text-white"
           }`}
           onClick={onSave}
@@ -39,7 +39,7 @@ const JobCard: FC<JobCardProps> = ({
         </button>
         {!isApplied && (
           <button
-            className="px-3 py-1 bg-green-500 text-white text-sm rounded-md"
+            className="px-3 cursor-pointer py-1 bg-green-500 text-white text-sm rounded-md"
             onClick={onApply}
           >
             Apply
