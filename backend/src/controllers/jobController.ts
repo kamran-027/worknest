@@ -169,3 +169,19 @@ export const saveJob = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getSavedJobs = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const savedJobs = await Job.find({ savedBy: userId });
+
+    res.status(200).json(savedJobs);
+  } catch (error) {
+    console.error("Error fetching saved jobs:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};

@@ -8,6 +8,8 @@ import {
   updateJob,
   deleteJob,
   applyToJob,
+  saveJob,
+  getSavedJobs,
 } from "../controllers/jobController";
 
 const router = express.Router();
@@ -41,7 +43,11 @@ router.post("/:jobId/apply", protect, async (req, res) => {
 }); //Apply to job
 
 router.post("/:jobId/save", protect, async (req, res) => {
-  await applyToJob(req, res);
+  await saveJob(req, res); //Save a job
+});
+
+router.get("/saved", protect, async (req, res) => {
+  await getSavedJobs(req, res); //Save a job
 });
 
 export default router;

@@ -1,4 +1,3 @@
-// frontend/src/components/JobCard.tsx
 import { FC } from "react";
 
 interface JobCardProps {

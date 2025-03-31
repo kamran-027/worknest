@@ -8,11 +8,14 @@ const Sidebar = () => {
         <Link to="/dashboard" className="block p-2 rounded hover:bg-gray-700">
           Home
         </Link>
-        <Link to="/saved-jobs" className="block p-2 rounded hover:bg-gray-700">
+        <Link
+          to="dashboard/saved-jobs"
+          className="block p-2 rounded hover:bg-gray-700"
+        >
           Saved Jobs
         </Link>
         <Link
-          to="/applications"
+          to="dashboard/applications"
           className="block p-2 rounded hover:bg-gray-700"
         >
           My Applications

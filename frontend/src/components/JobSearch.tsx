@@ -1,25 +1,30 @@
-import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import Input from "./ui/Input";
+import useJobActions from "../hooks/useJobActions";
 import JobCard from "./JobCard";
+import { Job } from "../types/Job";
+import { useAtom } from "jotai";
 import { searchQueryAtom } from "../atoms/searchQueryAtom";
+import Input from "./ui/Input";
+import axios from "axios";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
-interface Job {
-  _id: string;
-  title: string;
-  company: string;
-  location: string;
-  description: string;
-  isSaved: boolean;
-}
 
 const JobSearch = () => {
   const [query, setQuery] = useAtom(searchQueryAtom);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(false);
+  const { saveJob, applyJob } = useJobActions();
+
+  // Handle saving/un-saving a job
+  const toggleSaveJob = (jobId: string, isSaved: boolean) => {
+    saveJob(jobId, isSaved, () => {
+      setJobs((prevJobs) =>
+        prevJobs.map((job) =>
+          job._id === jobId ? { ...job, isSaved: !isSaved } : job
+        )
+      );
+    });
+  };
 
   // Fetch jobs from backend
   useEffect(() => {
@@ -47,41 +52,6 @@ const JobSearch = () => {
     return () => clearTimeout(timer);
   }, [query]);
 
-  // Save a job
-  const handleSaveJob = async (jobId: string) => {
-    try {
-      const token = localStorage.getItem("token");
-      await axios.post(
-        `${BACKEND_URL}/api/jobs/${jobId}/save`, // Need to implement this in backend
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      setJobs((prevJobs) =>
-        prevJobs.map((job) =>
-          job._id === jobId ? { ...job, isSaved: !job.isSaved } : job
-        )
-      );
-    } catch (error) {
-      console.error("Error saving job:", error);
-    }
-  };
-
-  const handleApplyJob = async (jobId: string) => {
-    try {
-      const token = localStorage.getItem("token");
-      await axios.post(
-        `${BACKEND_URL}/api/jobs/${jobId}/apply`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      alert("Application submitted!");
-    } catch (error) {
-      console.error("Error applying for job:", error);
-    }
-  };
-
   return (
     <div className="p-4">
       <Input
@@ -102,8 +72,10 @@ const JobSearch = () => {
               location={job.location}
               description={job.description}
               isSaved={job.isSaved}
-              onSave={() => handleSaveJob(job._id)}
-              onApply={() => handleApplyJob(job._id)}
+              onSave={() => toggleSaveJob(job._id, job.isSaved)}
+              onApply={() =>
+                applyJob(job._id, () => console.log("Applied to job"))
+              }
             />
           ))
         ) : (
