@@ -22,8 +22,8 @@ const Sidebar = () => {
 
       {/* Logo */}
       {!isCollapsed && (
-        <h2 className="text-2xl font-semibold text-gray-200 tracking-tight mb-8">
-          WorkNest
+        <h2 className="text-2xl font-mono text-gray-200 tracking-tight mb-8">
+          Dashboard
         </h2>
       )}
 

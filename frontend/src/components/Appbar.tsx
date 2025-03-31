@@ -6,7 +6,7 @@ const AppBar = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="flex justify-between items-center px-6 py-3 bg-opacity-80 backdrop-blur-md shadow-lg fixed top-0 left-0 right-0 z-50 bg-[#1E1E1E] text-white">
+    <header className="flex justify-between items-center px-6 py-3 bg-opacity-80 backdrop-blur-md shadow-lg fixed top-0 left-0 right-0 z-50 bg-[#1E1E1E] text-white h-16 ">
       {/* App Name */}
       <h1
         className="text-2xl font-semibold tracking-tight text-gray-200 cursor-pointer"
