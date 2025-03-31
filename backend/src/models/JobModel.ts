@@ -8,6 +8,7 @@ export interface IJob extends Document {
   location: string;
   applicants: mongoose.Types.ObjectId[];
   postedBy: mongoose.Types.ObjectId;
+  savedBy: mongoose.Types.ObjectId[];
   createdAt: Date;
 }
 
@@ -24,6 +25,13 @@ const jobSchema = new Schema<IJob>(
       ref: "User",
       required: true,
     },
+    savedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+    ],
   },
   { timestamps: true }
 );

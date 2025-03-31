@@ -40,4 +40,8 @@ router.post("/:jobId/apply", protect, async (req, res) => {
   await applyToJob(req, res);
 }); //Apply to job
 
+router.post("/:jobId/save", protect, async (req, res) => {
+  await applyToJob(req, res);
+});
+
 export default router;

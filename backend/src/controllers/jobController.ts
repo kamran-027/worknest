@@ -133,3 +133,39 @@ export const applyToJob = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
+export const saveJob = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.id; // Get user ID from `authMiddleware`
+    const { jobId } = req.params;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    const alreadySaved = job.savedBy.includes(userId);
+
+    if (alreadySaved) {
+      // Remove user from savedBy (unsave the job)
+      job.savedBy = job.savedBy.filter((id) => id.toString() !== userId);
+    } else {
+      // Save the job
+      job.savedBy.push(userId);
+    }
+
+    await job.save();
+
+    res.status(200).json({
+      message: alreadySaved ? "Job unsaved" : "Job saved",
+      isSaved: !alreadySaved,
+    });
+  } catch (error) {
+    console.error("Error saving job:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
