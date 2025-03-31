@@ -6,6 +6,7 @@ interface JobCardProps {
   location: string;
   description: string;
   isSaved: boolean;
+  isApplied: boolean;
   onSave: () => void;
   onApply: () => void;
 }
@@ -18,6 +19,7 @@ const JobCard: FC<JobCardProps> = ({
   isSaved,
   onSave,
   onApply,
+  isApplied,
 }) => {
   return (
     <div className="p-4 border rounded-md shadow-md">
@@ -35,12 +37,14 @@ const JobCard: FC<JobCardProps> = ({
         >
           {isSaved ? "Saved" : "Save Job"}
         </button>
-        <button
-          className="px-3 py-1 bg-green-500 text-white text-sm rounded-md"
-          onClick={onApply}
-        >
-          Apply
-        </button>
+        {!isApplied && (
+          <button
+            className="px-3 py-1 bg-green-500 text-white text-sm rounded-md"
+            onClick={onApply}
+          >
+            Apply
+          </button>
+        )}
       </div>
     </div>
   );

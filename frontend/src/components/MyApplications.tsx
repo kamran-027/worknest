@@ -38,6 +38,7 @@ const MyApplications = () => {
             location={job.location}
             description={job.description}
             isSaved={false}
+            isApplied={true}
             onSave={() => {}}
             onApply={() =>
               applyJob(job._id, () => console.log("Already applied"))
