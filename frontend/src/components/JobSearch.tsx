@@ -1,8 +1,6 @@
-// frontend/src/components/JobSearch.tsx
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { debounce } from "lodash";
 import Input from "./ui/Input";
 import JobCard from "./JobCard";
 import { searchQueryAtom } from "../atoms/searchQueryAtom";
@@ -23,30 +21,32 @@ const JobSearch = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchJobs = debounce(async (searchTerm: string) => {
-    if (!searchTerm) {
+  useEffect(() => {
+    if (!query) {
       setJobs([]);
       return;
     }
 
+    const token = localStorage.getItem("token");
     setLoading(true);
-    try {
-      const response = await axios.get(
-        `${BACKEND_URL}/api/jobs?search=${searchTerm}`,
-        {
-          withCredentials: true,
-        }
-      );
-      setJobs(response.data);
-    } catch (error) {
-      console.error("Error fetching jobs:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, 300);
 
-  useEffect(() => {
-    fetchJobs(query);
+    const handler = setTimeout(async () => {
+      try {
+        const response = await axios.get(
+          `${BACKEND_URL}/api/jobs?search=${query}`,
+          {
+            headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+          }
+        );
+        setJobs(response.data);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+      } finally {
+        setLoading(false);
+      }
+    }, 300); // Debounce time: 300ms
+
+    return () => clearTimeout(handler); // Cleanup previous timeout
   }, [query]);
 
   return (

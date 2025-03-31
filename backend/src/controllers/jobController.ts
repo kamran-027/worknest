@@ -35,10 +35,23 @@ export const createJob = async (req: AuthRequest, res: Response) => {
 
 export const getJobs = async (req: Request, res: Response) => {
   try {
-    const jobs = await Job.find().sort({ createdAt: -1 });
+    const { search } = req.query;
+
+    let query = {};
+    if (search) {
+      query = {
+        $or: [
+          { title: { $regex: search, $options: "i" } }, // Case-insensitive search in title
+          { company: { $regex: search, $options: "i" } }, // Search in company
+          { location: { $regex: search, $options: "i" } }, // Search in location
+        ],
+      };
+    }
+
+    const jobs = await Job.find(query);
     res.json(jobs);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching jobs", error });
+    res.status(500).json({ message: "Server error", error });
   }
 };
 

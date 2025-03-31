@@ -11,7 +11,7 @@ router.post("/register", async (req: Request, res: Response) => {
   await registerUser(req, res);
 });
 
-router.get("/login", async (req: Request, res: Response) => {
+router.post("/login", async (req: Request, res: Response) => {
   await loginUser(req, res);
 });
 
