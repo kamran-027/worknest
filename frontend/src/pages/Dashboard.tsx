@@ -24,7 +24,7 @@ const Dashboard = () => {
       <AppBar />
       <div className="flex flex-1">
         <Sidebar />
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-6 mt-10">
           <Routes>
             <Route path="/" element={<JobSearch />} />
             <Route path="saved-jobs" element={<SavedJobs />} />
