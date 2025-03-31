@@ -53,16 +53,22 @@ const JobSearch = () => {
   }, [query]);
 
   return (
-    <div className="p-4">
+    <div className="p-6 bg-white  ">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+        Find Your Dream Job
+      </h2>
       <Input
         label="Search Jobs"
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Type job title or keyword..."
+        className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:ring-2 focus:ring-indigo-400"
       />
-      {loading && <p className="mt-2 text-gray-500">Loading jobs...</p>}
-      <div className="mt-4 space-y-4">
+      {loading && (
+        <p className="mt-4 text-indigo-600 text-center">Loading jobs...</p>
+      )}
+      <div className="mt-6 space-y-6">
         {jobs.length > 0 ? (
           jobs.map((job) => (
             <JobCard
@@ -80,7 +86,9 @@ const JobSearch = () => {
             />
           ))
         ) : (
-          <p className="text-gray-600">No jobs found</p>
+          <p className="text-gray-500 text-center">
+            No jobs found. Try a different search term.
+          </p>
         )}
       </div>
     </div>

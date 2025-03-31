@@ -4,7 +4,6 @@ import { useAuth } from "../context/AuthContext";
 import Sidebar from "../components/Sidebar";
 import JobSearch from "../components/JobSearch";
 import SavedJobs from "../components/SavedJobs";
-// import Applications from "../components/Applications";
 import AppBar from "../components/Appbar";
 import MyApplications from "../components/MyApplications";
 
@@ -20,11 +19,11 @@ const Dashboard = () => {
   }, [user, navigate]);
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col bg-gray-200">
       <AppBar />
       <div className="flex flex-1">
         <Sidebar />
-        <div className="flex-1 p-6 mt-10">
+        <div className="flex-1 p-8 mt-12 bg-white shadow-lg rounded-lg mx-6">
           <Routes>
             <Route path="/" element={<JobSearch />} />
             <Route path="saved-jobs" element={<SavedJobs />} />
