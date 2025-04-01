@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 interface AuthContextType {
   user: { name: string } | null;
+  loading: boolean;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -11,6 +12,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [loading, setLoading] = useState(true); // Added loading state
 
   const fetchUserProfile = async (token: string) => {
     try {
@@ -22,6 +24,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("Failed to fetch user profile:", error);
       localStorage.removeItem("token");
       setUser(null);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -29,6 +33,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const token = localStorage.getItem("token");
     if (token) {
       fetchUserProfile(token);
+    } else {
+      setLoading(false);
     }
   }, []);
 
@@ -40,10 +46,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
-    window.location.reload();
+    window.location.href = "/";
   };
 
-  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, loading, login, logout }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
