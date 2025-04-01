@@ -11,7 +11,8 @@ export const getJobRecommendations = async (userId: string) => {
       $facet: {
         userHistory: [
           { $match: { applicants: new mongoose.Types.ObjectId(userId) } }, // Applied jobs
-          { $project: { category: 1, _id: 0 } }, // Extract categories
+          { $group: { _id: null, categories: { $addToSet: "$category" } } }, // Ensure categories are an array
+          { $project: { _id: 0, categories: { $ifNull: ["$categories", []] } } }, // Ensure array format
         ],
         trendingJobs: [
           {
@@ -26,16 +27,16 @@ export const getJobRecommendations = async (userId: string) => {
         ],
       },
     },
-    { $unwind: "$userHistory" },
+    { $unwind: { path: "$userHistory", preserveNullAndEmptyArrays: true } },
     {
       $lookup: {
         from: "jobs",
-        let: { userCategories: "$userHistory.category" },
+        let: { userCategories: { $ifNull: ["$userHistory.categories", []] } }, // Ensure array
         pipeline: [
           {
             $match: {
               $expr: {
-                $in: ["$category", "$$userCategories"], // Find jobs in user's applied categories
+                $in: ["$category", "$$userCategories"], // Match jobs from applied categories
               },
               applicants: { $ne: new mongoose.Types.ObjectId(userId) }, // Exclude already applied jobs
             },
@@ -48,10 +49,10 @@ export const getJobRecommendations = async (userId: string) => {
     },
     {
       $project: {
-        recommendations: { $concatArrays: ["$trendingJobs", "$categoryJobs"] }, // Combine both results
+        recommendations: { $concatArrays: ["$trendingJobs", "$categoryJobs"] }, // Merge results
       },
     },
     { $unwind: "$recommendations" },
-    { $limit: 5 }, // Get top 5 recommendations
+    { $limit: 5 },
   ]);
 };
