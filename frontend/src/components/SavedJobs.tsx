@@ -63,7 +63,7 @@ const SavedJobs = () => {
             isSaved={true}
             isApplied={false}
             onSave={() => handleUnsaveJob(job._id)}
-            onApply={() => applyJob(job._id, () => console.log("Applied to job"))}
+            onApply={() => applyJob(job._id)}
           />
         ))
       )}

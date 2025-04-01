@@ -81,7 +81,7 @@ const JobSearch = () => {
                 isSaved={job.isSaved}
                 isApplied={false}
                 onSave={() => toggleSaveJob(job._id, job.isSaved)}
-                onApply={() => applyJob(job._id, () => console.log("Applied to job"))}
+                onApply={() => applyJob(job._id)}
               />
             ))
           ) : (
