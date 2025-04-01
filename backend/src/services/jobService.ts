@@ -6,20 +6,18 @@ export const getJobRecommendations = async (userId: string) => {
   const user = await User.findById(userId);
   if (!user) throw new Error("User not found");
 
-  return Job.aggregate([
+  const recommendations = await Job.aggregate([
     {
       $facet: {
         userHistory: [
-          { $match: { applicants: new mongoose.Types.ObjectId(userId) } }, // Applied jobs
-          { $group: { _id: null, categories: { $addToSet: "$category" } } }, // Ensure categories are an array
-          { $project: { _id: 0, categories: { $ifNull: ["$categories", []] } } }, // Ensure array format
+          { $match: { applicants: new mongoose.Types.ObjectId(userId) } },
+          { $group: { _id: null, categories: { $addToSet: "$category" } } },
+          { $project: { _id: 0, categories: { $ifNull: ["$categories", []] } } },
         ],
         trendingJobs: [
           {
             $match: {
-              createdAt: {
-                $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-              }, // Last 7 days
+              createdAt: { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) },
             },
           },
           { $sort: { createdAt: -1 } },
@@ -31,14 +29,12 @@ export const getJobRecommendations = async (userId: string) => {
     {
       $lookup: {
         from: "jobs",
-        let: { userCategories: { $ifNull: ["$userHistory.categories", []] } }, // Ensure array
+        let: { userCategories: { $ifNull: ["$userHistory.categories", []] } },
         pipeline: [
           {
             $match: {
-              $expr: {
-                $in: ["$category", "$$userCategories"], // Match jobs from applied categories
-              },
-              applicants: { $ne: new mongoose.Types.ObjectId(userId) }, // Exclude already applied jobs
+              $expr: { $in: ["$category", "$$userCategories"] },
+              applicants: { $ne: new mongoose.Types.ObjectId(userId) },
             },
           },
           { $sort: { createdAt: -1 } },
@@ -49,10 +45,13 @@ export const getJobRecommendations = async (userId: string) => {
     },
     {
       $project: {
-        recommendations: { $concatArrays: ["$trendingJobs", "$categoryJobs"] }, // Merge results
+        recommendations: { $concatArrays: ["$trendingJobs", "$categoryJobs"] },
       },
     },
-    { $unwind: "$recommendations" },
+    { $unwind: "$recommendations" }, // Flatten the recommendations array
+    { $replaceRoot: { newRoot: "$recommendations" } }, // Extract job objects directly
     { $limit: 5 },
   ]);
+
+  return recommendations;
 };
