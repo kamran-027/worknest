@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useJobActions from "../hooks/useJobActions";
 import { Job } from "../types/Job";
 import axios from "axios";
 import JobCard from "../components/JobCard";
@@ -7,7 +6,6 @@ import JobCard from "../components/JobCard";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const MyApplications = () => {
-  const { applyJob } = useJobActions();
   const [appliedJobs, setAppliedJobs] = useState<Job[]>([]);
 
   const fetchAppliedJobs = async () => {
@@ -40,9 +38,7 @@ const MyApplications = () => {
             isSaved={false}
             isApplied={true}
             onSave={() => {}}
-            onApply={() =>
-              applyJob(job._id, () => console.log("Already applied"))
-            }
+            onApply={() => {}}
           />
         ))
       ) : (

@@ -5,6 +5,7 @@ import JobSearch from "../components/JobSearch";
 import SavedJobs from "../components/SavedJobs";
 import AppBar from "../components/Appbar";
 import MyApplications from "../components/MyApplications";
+import JobRecommendations from "../components/JobRecommendations";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const Dashboard = () => {
               <Route path="/" element={<JobSearch />} />
               <Route path="saved-jobs" element={<SavedJobs />} />
               <Route path="applications" element={<MyApplications />} />
+              <Route path="recommendations" element={<JobRecommendations />} />
             </Routes>
           </main>
         </div>
