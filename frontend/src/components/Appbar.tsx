@@ -7,22 +7,26 @@ const AppBar = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="flex justify-between items-center px-6 py-3 bg-opacity-80 backdrop-blur-md shadow-lg fixed top-0 left-0 right-0 z-50 bg-[#1E1E1E] text-white h-16">
-      {/* App Name and Logo */}
-      <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/dashboard")}>
-        <img src={worknest} alt="WorkNest Logo" className="h-8 w-8" />
-        <h1 className="text-2xl font-semibold tracking-tight text-gray-200">WorkNest</h1>
+    <header
+      className="flex justify-between items-center px-6 py-3 bg-[#161616] 
+                 border-b border-gray-700 shadow-md fixed top-0 left-0 right-0 z-50 h-16"
+    >
+      {/* Left: Logo & Title */}
+      <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/dashboard")}>
+        <img src={worknest} alt="WorkNest Logo" className="h-9 w-9" />
+        <div className="flex flex-col">
+          <h1 className="text-lg font-semibold text-gray-300">WorkNest</h1>
+          <span className="text-xs text-gray-400">Your gateway to career growth</span>
+        </div>
       </div>
 
-      {/* Description inline with title */}
-      <div className="text-xs sm:text-sm text-gray-300 hidden sm:block">Your gateway to career growth</div>
-
-      {/* User Info & Logout */}
-      <div className="flex items-center gap-6">
-        <span className="text-sm sm:text-base font-medium text-gray-300">Welcome, {user?.name || "User"}</span>
+      {/* Right: User Info & Logout */}
+      <div className="flex items-center gap-4">
+        <span className="text-sm font-medium text-gray-400 hidden sm:block">Welcome, {user?.name || "User"}</span>
         <button
           onClick={logout}
-          className="px-4 py-2 cursor-pointer bg-red-500 hover:bg-red-600 text-white rounded-full text-sm font-medium shadow-md transition-transform transform hover:scale-105"
+          className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md 
+                     text-sm font-medium shadow transition-transform transform hover:scale-105"
         >
           Logout
         </button>
