@@ -18,11 +18,7 @@ const JobSearch = () => {
   // Handle saving/un-saving a job
   const toggleSaveJob = (jobId: string, isSaved: boolean) => {
     saveJob(jobId, isSaved, () => {
-      setJobs((prevJobs) =>
-        prevJobs.map((job) =>
-          job._id === jobId ? { ...job, isSaved: !isSaved } : job
-        )
-      );
+      setJobs((prevJobs) => prevJobs.map((job) => (job._id === jobId ? { ...job, isSaved: !isSaved } : job)));
     });
   };
 
@@ -32,9 +28,7 @@ const JobSearch = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const url = query
-          ? `${BACKEND_URL}/api/jobs?search=${query}`
-          : `${BACKEND_URL}/api/jobs`;
+        const url = query ? `${BACKEND_URL}/api/jobs?search=${query}` : `${BACKEND_URL}/api/jobs`;
 
         const response = await axios.get(url, {
           headers: token ? { Authorization: `Bearer ${token}` } : undefined,
@@ -53,10 +47,8 @@ const JobSearch = () => {
   }, [query]);
 
   return (
-    <div className="p-6 bg-white  ">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-        Find Your Dream Job
-      </h2>
+    <div className="p-6 bg-white">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Find Your Dream Job</h2>
       <Input
         label="Search Jobs"
         type="text"
@@ -65,32 +57,38 @@ const JobSearch = () => {
         placeholder="Type job title or keyword..."
         className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:ring-2 focus:ring-indigo-400"
       />
-      {loading && (
-        <p className="mt-4 text-indigo-600 text-center">Loading jobs...</p>
+
+      {loading ? (
+        <div className="mt-6 space-y-6">
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className="animate-pulse p-4 border border-gray-200 rounded-lg shadow-sm bg-white">
+              <div className="h-6 bg-gray-300 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
+              <div className="h-4 bg-gray-300 rounded w-5/6"></div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="mt-6 space-y-6">
+          {jobs.length > 0 ? (
+            jobs.map((job) => (
+              <JobCard
+                key={job._id}
+                title={job.title}
+                company={job.company}
+                location={job.location}
+                description={job.description}
+                isSaved={job.isSaved}
+                isApplied={false}
+                onSave={() => toggleSaveJob(job._id, job.isSaved)}
+                onApply={() => applyJob(job._id, () => console.log("Applied to job"))}
+              />
+            ))
+          ) : (
+            <p className="text-gray-500 text-center">No jobs found. Try a different search term.</p>
+          )}
+        </div>
       )}
-      <div className="mt-6 space-y-6">
-        {jobs.length > 0 ? (
-          jobs.map((job) => (
-            <JobCard
-              key={job._id}
-              title={job.title}
-              company={job.company}
-              location={job.location}
-              description={job.description}
-              isSaved={job.isSaved}
-              isApplied={false}
-              onSave={() => toggleSaveJob(job._id, job.isSaved)}
-              onApply={() =>
-                applyJob(job._id, () => console.log("Applied to job"))
-              }
-            />
-          ))
-        ) : (
-          <p className="text-gray-500 text-center">
-            No jobs found. Try a different search term.
-          </p>
-        )}
-      </div>
     </div>
   );
 };

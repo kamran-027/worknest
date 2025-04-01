@@ -25,7 +25,7 @@ const AppBar = () => {
         <span className="text-sm font-medium text-gray-400 hidden sm:block">Welcome, {user?.name || "User"}</span>
         <button
           onClick={logout}
-          className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md 
+          className="cursor-pointer px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md 
                      text-sm font-medium shadow transition-transform transform hover:scale-105"
         >
           Logout

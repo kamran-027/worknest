@@ -118,9 +118,15 @@ const Login = () => {
 
             <button
               type="submit"
-              className="cursor-pointer w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all duration-200 disabled:bg-blue-300"
+              className="cursor-pointer w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all duration-200 flex items-center justify-center gap-2 disabled:bg-blue-300"
               disabled={isLoading}
             >
+              {isLoading && (
+                <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25" />
+                  <path fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" className="opacity-75" />
+                </svg>
+              )}
               {isLoading ? "Processing..." : showOtpInput ? "Unlock Account" : "Login"}
             </button>
           </form>
