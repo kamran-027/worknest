@@ -30,7 +30,7 @@ const Login = () => {
       const error = err as AxiosError<ApiErrorResponse>;
       setIsLoading(false);
 
-      if (error.response?.status === 423 || error.response?.data?.code === "ACCOUNT_LOCKED") {
+      if (error.response?.status === 403) {
         setError("Account locked. Enter OTP sent to your email.");
         setShowOtpInput(true);
       } else {
