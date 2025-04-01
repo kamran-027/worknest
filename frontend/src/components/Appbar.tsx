@@ -6,12 +6,14 @@ const AppBar = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="flex justify-between items-center px-6 py-3 bg-opacity-80 backdrop-blur-md shadow-lg fixed top-0 left-0 right-0 z-50 bg-[#1E1E1E] text-white h-16 ">
-      {/* App Name */}
-      <h1 className="text-2xl font-semibold tracking-tight text-gray-200 cursor-pointer" onClick={() => navigate("/dashboard")}>
-        WorkNest
-      </h1>
-      <p className="text-sm sm:text-base text-gray-300 mt-1">Your one-stop solution for job opportunities and career growth.</p>
+    <header className="flex justify-between items-center px-6 py-3 bg-opacity-80 backdrop-blur-md shadow-lg fixed top-0 left-0 right-0 z-50 bg-[#1E1E1E] text-white h-16">
+      {/* App Name and Description */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center">
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-200 cursor-pointer" onClick={() => navigate("/dashboard")}>
+          WorkNest
+        </h1>
+        <span className="text-xs sm:text-sm text-gray-300 mt-1 sm:mt-0 sm:ml-2">Job opportunities and career growth</span>
+      </div>
 
       {/* User Info & Logout */}
       <div className="flex items-center gap-6">
