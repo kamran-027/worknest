@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import worknest from "../assets/worknest.svg";
 
 const AppBar = () => {
   const { user, logout } = useAuth();
@@ -7,13 +8,14 @@ const AppBar = () => {
 
   return (
     <header className="flex justify-between items-center px-6 py-3 bg-opacity-80 backdrop-blur-md shadow-lg fixed top-0 left-0 right-0 z-50 bg-[#1E1E1E] text-white h-16">
-      {/* App Name */}
-      <h1 className="text-2xl font-semibold tracking-tight text-gray-200 cursor-pointer" onClick={() => navigate("/dashboard")}>
-        WorkNest
-      </h1>
+      {/* App Name and Logo */}
+      <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/dashboard")}>
+        <img src={worknest} alt="WorkNest Logo" className="h-8 w-8" />
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-200">WorkNest</h1>
+      </div>
 
-      {/* Tagline (subtle and aligned to the right) */}
-      <div className="text-xs sm:text-sm text-gray-300 hidden sm:block">Your gateway to career growth.</div>
+      {/* Description inline with title */}
+      <div className="text-xs sm:text-sm text-gray-300 hidden sm:block">Your gateway to career growth</div>
 
       {/* User Info & Logout */}
       <div className="flex items-center gap-6">
