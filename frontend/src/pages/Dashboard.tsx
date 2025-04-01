@@ -15,14 +15,11 @@ const Dashboard = () => {
       navigate("/");
     }
   }, [navigate]);
-
   return (
     <div className="flex h-screen flex-col bg-gray-100">
       <AppBar />
 
       <div className="flex flex-1 overflow-hidden pt-16">
-        {" "}
-        {/* Adjust pt-16 based on AppBar height */}
         <Sidebar />
         <div className="flex-1 p-4 sm:p-6">
           <main className="h-full w-full overflow-y-auto rounded-lg bg-white p-6 shadow-md">
