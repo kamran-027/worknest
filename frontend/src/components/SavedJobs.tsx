@@ -52,7 +52,7 @@ const SavedJobs = () => {
               </div>
             ))}
           </div>
-        ) : (
+        ) : savedJobs.length > 0 ? (
           savedJobs.map((job) => (
             <JobCard
               key={job._id}
@@ -66,6 +66,8 @@ const SavedJobs = () => {
               onApply={() => applyJob(job._id)}
             />
           ))
+        ) : (
+          <p className="text-gray-600 text-center">No saved jobs yet. Start saving jobs to track them here!</p>
         )}
       </div>
     </div>
