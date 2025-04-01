@@ -41,32 +41,33 @@ const SavedJobs = () => {
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Saved Jobs</h2>
-
-      {loading ? (
-        <div className="space-y-4">
-          {[...Array(3)].map((_, index) => (
-            <div key={index} className="animate-pulse p-4 border border-gray-200 rounded-lg shadow-sm bg-white">
-              <div className="h-6 bg-gray-300 rounded w-3/4 mb-2"></div>
-              <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
-              <div className="h-4 bg-gray-300 rounded w-5/6"></div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        savedJobs.map((job) => (
-          <JobCard
-            key={job._id}
-            title={job.title}
-            company={job.company}
-            location={job.location}
-            description={job.description}
-            isSaved={true}
-            isApplied={false}
-            onSave={() => handleUnsaveJob(job._id)}
-            onApply={() => applyJob(job._id)}
-          />
-        ))
-      )}
+      <div className="mt-6 space-y-6">
+        {loading ? (
+          <div className="space-y-4">
+            {[...Array(3)].map((_, index) => (
+              <div key={index} className="animate-pulse p-4 border border-gray-200 rounded-lg shadow-sm bg-white">
+                <div className="h-6 bg-gray-300 rounded w-3/4 mb-2"></div>
+                <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
+                <div className="h-4 bg-gray-300 rounded w-5/6"></div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          savedJobs.map((job) => (
+            <JobCard
+              key={job._id}
+              title={job.title}
+              company={job.company}
+              location={job.location}
+              description={job.description}
+              isSaved={true}
+              isApplied={false}
+              onSave={() => handleUnsaveJob(job._id)}
+              onApply={() => applyJob(job._id)}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 };
