@@ -13,7 +13,7 @@ const useJobActions = () => {
       const token = localStorage.getItem("token");
 
       if (isSaved) {
-        await axios.delete(`${BACKEND_URL}/api/jobs/${jobId}/save`, {
+        await axios.post(`${BACKEND_URL}/api/jobs/${jobId}/save`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         onSuccess?.();
