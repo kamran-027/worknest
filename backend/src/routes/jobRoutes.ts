@@ -10,8 +10,8 @@ import {
   applyToJob,
   saveJob,
   getSavedJobs,
+  getAppliedJobs,
 } from "../controllers/jobController";
-import { getAppliedJobs } from "../controllers/userController";
 
 const router = express.Router();
 
